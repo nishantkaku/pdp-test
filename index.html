@@ -1,0 +1,773 @@
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Samridhi Luxuriya Avenue</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { background: #e8e8e8; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      width: 360px;
+      margin: 0 auto;
+      color: #1a1a1a;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ─────────────────────────────────── */
+    .hero {
+      position: relative;
+      width: 360px;
+      height: 571px;
+      overflow: hidden;
+      background: #f6f5ee;
+    }
+    .hero img {
+      position: absolute;
+      top: -2px; left: -210px;
+      width: 797px; height: 598px;
+      object-fit: cover;
+    }
+    /* Fallback gradient if image doesn't load */
+    .hero-bg-fallback {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, #9fb894 0%, #7a9e70 40%, #5e8055 70%, #4a6e40 100%);
+    }
+    .hero-gradient {
+      position: absolute;
+      bottom: 0; left: 0; right: 0; height: 72px;
+      background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.7));
+    }
+    /* Carousel dots — y=458 */
+    .hero-dots {
+      position: absolute;
+      bottom: 113px; /* 571 - 458 = 113 */
+      left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .dot-active {
+      width: 24px; height: 6px;
+      border-radius: 40px; background: #fff;
+    }
+    .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%; background: rgba(255,255,255,0.7);
+    }
+    /* Top bar — logo pill at x=123, y=11, w=115, h=34 */
+    .hero-logo-pill {
+      position: absolute;
+      top: 11px; left: 123px;
+      width: 115px; height: 34px;
+      background: rgba(26,26,26,0.85);
+      border-radius: 40px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-logo-text {
+      color: #fff; font-size: 13px; font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+    /* Floating action buttons — x=308, y=55, w=36 each */
+    .hero-actions {
+      position: absolute;
+      top: 55px; right: 16px; /* 360-308-36=16 */
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .hero-fab {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: #fff;
+      border: 1px solid #e6e6e6;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+    .hero-fab svg { width: 20px; height: 20px; }
+
+    /* ── TITLE SECTION — y=478, h=287 ────────── */
+    /* border-radius: 24 24 0 0; backdrop-filter: blur(60px) */
+    .title-section {
+      background: linear-gradient(to bottom, rgba(255,255,255,0.8) 0%, #fff 100%);
+      backdrop-filter: blur(60px);
+      -webkit-backdrop-filter: blur(60px);
+      border-radius: 24px 24px 0 0;
+      padding: 24px;
+      margin-top: -24px;
+      position: relative; z-index: 10;
+    }
+    /* content/title-block: y=502-478=24, h=104 */
+    .prop-name {
+      font-size: 24px; font-weight: 500; line-height: 1.25;
+      color: #1a1a1a; margin-bottom: 4px;
+    }
+    .prop-address {
+      font-size: 12px; color: #575757; line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .prop-address a { color: #4117ff; text-decoration: none; }
+    /* tags row — x=24,y=583 (583-478=105 from top of section = 24+81=105) */
+    /* Actually tag frames: y=583, section starts at 478, padding=24, so 583-478-24=81px from content top */
+    .tags-row {
+      display: flex; gap: 4px; flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .tag {
+      height: 23px; padding: 0 8px;
+      background: #f6f5ee; border-radius: 4px;
+      display: flex; align-items: center; gap: 4px;
+      font-size: 12px; color: #222;
+    }
+    /* price row — row/rating-price: y=626, h=39, fill=#f6f5ee, r=12 */
+    .price-row {
+      background: #f6f5ee;
+      border-radius: 12px;
+      padding: 0 0 0 0;
+      display: flex; align-items: center;
+      height: 39px; gap: 0;
+      margin-bottom: 0;
+    }
+    .price-inner {
+      flex: 1; padding: 0 0 0 0;
+      display: flex; flex-direction: column; gap: 4px;
+      justify-content: center; padding-left: 0;
+    }
+    .price-top {
+      display: flex; align-items: center; gap: 4px;
+    }
+    .price-main { font-size: 16px; font-weight: 500; color: #000; }
+    .price-sqft { font-size: 12px; color: #585858; }
+    .bhk-types { font-size: 12px; font-weight: 300; color: #1a1a1a; }
+    .rating-box {
+      width: 56px; height: 26px; /* w=56 from Figma */
+      background: #f6f5ee; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 4px; flex-shrink: 0;
+    }
+    .rating-num { font-size: 14px; color: #222; }
+    .rating-star { color: #f59e0b; font-size: 14px; }
+
+    .divider { height: 1px; background: #e6e6e6; margin: 20px 0; }
+
+    /* seller row */
+    .seller-row {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .seller-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 600; color: #fff; flex-shrink: 0;
+    }
+    .seller-info { flex: 1; }
+    .seller-name { font-size: 12px; color: #222; }
+    .seller-role { font-size: 12px; color: #575757; }
+    .btn-outline {
+      height: 32px; padding: 0 12px;
+      border: 1px solid #4c4c4c; background: #fff;
+      border-radius: 6px; font-size: 12px; color: #222;
+      cursor: pointer; font-family: 'Inter', sans-serif;
+      white-space: nowrap; display: flex; align-items: center; gap: 4px;
+    }
+
+    /* ── SECTION BASE ─────────────────────────── */
+    .section {
+      background: #fff;
+      padding: 24px;
+      border-top: 1px solid #e6e6e6;
+    }
+    .section-title {
+      font-size: 20px; font-weight: 500; color: #1a1a1a;
+      margin-bottom: 20px;
+    }
+
+    /* ── FLOOR PLAN TABS ─────────────────────── */
+    /* tabs: x=24,y=830, each w=80,h=40, gap=12, r=8 */
+    .tabs-row {
+      display: flex; gap: 12px; margin-bottom: 20px;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .tabs-row::-webkit-scrollbar { display: none; }
+    .tab {
+      width: 80px; height: 40px; flex-shrink: 0;
+      border-radius: 8px;
+      border: 1px solid #e1e2e8;
+      background: #fff;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1px; cursor: pointer;
+    }
+    .tab.active { background: #000; border-color: #000; }
+    .tab-label { font-size: 12px; color: #222; }
+    .tab.active .tab-label { color: #fff; }
+    .tab-count { font-size: 10px; color: #434343; }
+    .tab.active .tab-count { color: rgba(255,255,255,0.7); }
+
+    /* Floor plan cards — w=312,h=184, p=16, r=12 */
+    .floor-card {
+      background: #fff; border-radius: 12px;
+      border: 1px solid #e6e6e6;
+      padding: 16px;
+      display: flex; gap: 12px;
+      margin-bottom: 12px;
+    }
+    .floor-thumb {
+      width: 133px; height: 100px;
+      border-radius: 8px; flex-shrink: 0;
+      background: #f6f5ee;
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .floor-thumb svg { width: 60px; height: 60px; opacity: 0.4; }
+    .floor-3d {
+      position: absolute; bottom: 6px; right: 6px;
+      background: #000; color: #fff;
+      font-size: 9px; font-weight: 600;
+      padding: 2px 6px; border-radius: 4px;
+    }
+    .floor-info { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .floor-size { font-size: 16px; font-weight: 500; color: #1a1a1a; }
+    .floor-meta-label { font-size: 12px; color: #575757; }
+    .floor-meta-val { font-size: 12px; font-weight: 500; color: #1a1a1a; }
+    .floor-cta { font-size: 12px; color: #4117ff; cursor: pointer; margin-top: 4px; }
+
+    /* ── PAYMENT PLAN ─────────────────────────── */
+    .emi-main { font-size: 14px; color: #1a1a1a; margin-bottom: 8px; }
+    .emi-meta {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 12px; color: #222; margin-bottom: 12px;
+    }
+    .emi-sep { color: #e6e6e6; }
+    .link-blue {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 12px; color: #4117ff; cursor: pointer;
+    }
+    .link-blue::after { content: '›'; font-size: 14px; }
+    .btn-wide {
+      width: 100%; height: 40px;
+      border: 1px solid #4c4c4c; background: #fff;
+      border-radius: 8px; margin-top: 12px;
+      font-size: 14px; color: #222;
+      cursor: pointer; font-family: 'Inter', sans-serif;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+
+    /* ── INVESTMENT INSIGHTS ──────────────────── */
+    .insight-row {
+      display: flex; gap: 16px; margin-bottom: 8px;
+    }
+    .insight-block { flex: 1; }
+    .insight-label { font-size: 12px; color: #575757; margin-bottom: 2px; }
+    .insight-val { font-size: 16px; color: #1a1a1a; }
+    .insight-gain { font-size: 12px; color: #027e44; font-weight: 500; }
+    .insight-note { font-size: 12px; color: #575757; margin-bottom: 12px; }
+
+    /* ── BETTER PRICED PROPERTIES ────────────── */
+    .similar-section { background: #f6f5ee; padding: 24px; border-top: 1px solid #e6e6e6; }
+    .similar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .view-all { display: flex; align-items: center; gap: 2px; font-size: 12px; font-weight: 500; color: #4117ff; cursor: pointer; }
+    /* Horizontal scroll cards: w=273, h=424, r=12, p=16 */
+    .similar-scroll {
+      display: flex; gap: 16px;
+      overflow-x: auto; scrollbar-width: none;
+      margin: 0 -24px; padding: 0 24px;
+    }
+    .similar-scroll::-webkit-scrollbar { display: none; }
+    .similar-card {
+      width: 273px; flex-shrink: 0;
+      background: #fff; border-radius: 12px;
+      padding: 16px;
+    }
+    .similar-img {
+      width: 241px; height: 181px;
+      border-radius: 8px; margin-bottom: 12px;
+      position: relative; overflow: hidden;
+    }
+    .similar-img-bg {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, #c5d5e8, #8fa8c8);
+    }
+    .similar-fav {
+      position: absolute; top: 8px; right: 8px;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: #fff; display: flex; align-items: center; justify-content: center;
+      font-size: 14px; cursor: pointer;
+    }
+    .similar-name { font-size: 16px; font-weight: 500; color: #1a1a1a; margin-bottom: 4px; }
+    .similar-addr { font-size: 12px; color: #575757; margin-bottom: 8px; }
+    .similar-tags { display: flex; gap: 4px; margin-bottom: 8px; flex-wrap: wrap; }
+    .similar-price { font-size: 12px; font-weight: 500; color: #1a1a1a; margin-bottom: 2px; }
+    .similar-bhk { font-size: 12px; color: #575757; margin-bottom: 2px; }
+    .similar-sqft {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 12px; color: #575757; margin-bottom: 12px;
+    }
+    .btn-phone {
+      width: 100%; height: 40px;
+      border: 1px solid #e6e6e6; background: #fff;
+      border-radius: 8px; font-size: 14px; color: #222;
+      cursor: pointer; font-family: 'Inter', sans-serif;
+    }
+
+    /* ── MASTER PLAN ─────────────────────────── */
+    .rera-label { font-size: 12px; color: #575757; margin-bottom: 4px; }
+    .rera-val {
+      font-size: 16px; color: #1a1a1a; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .rera-icon {
+      width: 16px; height: 16px; border-radius: 50%;
+      background: #e8f0fe; border: 1px solid #4117ff;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 9px; color: #4117ff; font-weight: 700; flex-shrink: 0;
+    }
+    .highlights-title { font-size: 14px; font-weight: 500; color: #1a1a1a; margin-bottom: 12px; }
+    .kh-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    .kh-item .kh-label { font-size: 12px; color: #575757; margin-bottom: 2px; }
+    .kh-item .kh-val { font-size: 16px; color: #1a1a1a; }
+    .highlight-list { margin-bottom: 16px; }
+    .highlight-item {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 12px; color: #575757; margin-bottom: 10px; line-height: 1.5;
+    }
+    .hl-bullet {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #4117ff; flex-shrink: 0; margin-top: 4px;
+    }
+    /* Master plan image placeholder */
+    .master-plan-img {
+      width: 312px; height: 200px;
+      border-radius: 12px; margin-bottom: 20px;
+      background: linear-gradient(135deg, #e8f4e0, #c8dcc0);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .master-plan-img svg { width: 80px; height: 80px; opacity: 0.25; }
+
+    /* ── AMENITIES ───────────────────────────── */
+    .amenity-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 12px 16px; margin-bottom: 16px;
+    }
+    .amenity {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+    }
+    .amenity-icon {
+      width: 56px; height: 56px;
+      border-radius: 16px; background: #f6f5ee;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .amenity-icon img { width: 28px; height: 28px; }
+    .amenity-icon span { font-size: 22px; }
+    .amenity-label { font-size: 11px; color: #575757; text-align: center; line-height: 1.3; }
+
+    /* ── BOTTOM CTA ──────────────────────────── */
+    .bottom-cta {
+      position: sticky; bottom: 0; z-index: 100;
+      background: #fff;
+      padding: 16px 24px;
+      display: flex; gap: 16px;
+      box-shadow: 0 -8px 24px rgba(0,0,0,0.05);
+    }
+    .btn-cta-outline {
+      flex: 1; height: 48px;
+      border: 1px solid #4c4c4c; background: #fff;
+      border-radius: 12px; font-size: 16px; color: #222;
+      cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 400;
+    }
+    .btn-cta-primary {
+      flex: 1; height: 48px;
+      border: none; background: #5517ff;
+      border-radius: 12px; font-size: 16px; color: #fff;
+      cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 500;
+    }
+    .btn-cta-primary:hover { background: #4410e0; }
+    .btn-cta-outline:hover { background: #f5f5f5; }
+  </style>
+</head>
+<body>
+
+<!-- ─── HERO ──────────────────────────────────────────── -->
+<div class="hero">
+  <div class="hero-bg-fallback"></div>
+  <!-- Real property image via unsplash (similar high-rise building) -->
+  <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&amp;q=80" onerror="this.style.display='none'" alt="Samridhi Luxuriya Avenue">
+  <div class="hero-gradient"></div>
+
+  <div class="hero-logo-pill">
+    <span class="hero-logo-text">housing.com</span>
+  </div>
+
+  <div class="hero-dots">
+    <div class="dot-active"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+
+  <div class="hero-actions">
+    <button class="hero-fab" id="favBtn">
+      <!-- Heart icon -->
+      <svg viewBox="0 0 20 20" fill="none" stroke="#4c4c4c" stroke-width="1.5">
+        <path d="M10 17s-7-4.35-7-9a4 4 0 0 1 7-2.646A4 4 0 0 1 17 8c0 4.65-7 9-7 9z"></path>
+      </svg>
+    </button>
+    <button class="hero-fab">
+      <!-- Share icon -->
+      <svg viewBox="0 0 20 20" fill="none" stroke="#4c4c4c" stroke-width="1.5">
+        <circle cx="15" cy="4" r="2"></circle><circle cx="5" cy="10" r="2"></circle><circle cx="15" cy="16" r="2"></circle>
+        <line x1="7" y1="11" x2="13" y2="15"></line><line x1="7" y1="9" x2="13" y2="5"></line>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- ─── TITLE & SELLER ─────────────────────────────────── -->
+<div class="title-section">
+  <!-- Title block -->
+  <div class="prop-name">Samridhi Luxuriya Avenue</div>
+  <div class="prop-address">
+    Sector 150, Noida-Greater Noida Expressway, Noida, UP - 201301
+    &nbsp;<a href="#">View on map</a>
+  </div>
+
+  <!-- Tags -->
+  <div class="tags-row">
+    <span class="tag">New launch</span>
+    <span class="tag">RERA</span>
+    <span class="tag">Possession by 2028</span>
+  </div>
+
+  <!-- Price + Rating row -->
+  <div style="display:flex; align-items:flex-start; gap:8px; margin-bottom:20px;">
+    <div style="flex:1">
+      <div class="price-top" style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+        <span class="price-main">₹2.25 Cr - 4.27 Cr</span>
+        <span class="price-sqft">(₹15K / sq.ft.)</span>
+      </div>
+      <div class="bhk-types">2.5, 3, 4 bhk apartment &amp; villa</div>
+    </div>
+    <div class="rating-box">
+      <span class="rating-num">3.2</span>
+      <span class="rating-star">★</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Seller row -->
+  <div class="seller-row">
+    <div class="seller-avatar">KK</div>
+    <div class="seller-info">
+      <div class="seller-name">Krishna Kumar</div>
+      <div class="seller-role">Seller</div>
+    </div>
+    <button class="btn-outline">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#222" stroke-width="1.2">
+        <path d="M9 1H3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"></path>
+        <path d="M4 5h4M4 7h2"></path>
+      </svg>
+      View phone
+    </button>
+  </div>
+</div>
+
+<!-- ─── FLOOR PLAN & PRICING ───────────────────────────── -->
+<div class="section">
+  <div class="section-title">Floor plan &amp; pricing</div>
+  <div class="tabs-row">
+    <div class="tab" onclick="selectTab(this)">
+      <span class="tab-label">All</span>
+      <span class="tab-count">6 Sizes</span>
+    </div>
+    <div class="tab" onclick="selectTab(this)">
+      <span class="tab-label">2 BHK</span>
+      <span class="tab-count">1 Size</span>
+    </div>
+    <div class="tab active" onclick="selectTab(this)">
+      <span class="tab-label">2.5 BHK</span>
+      <span class="tab-count">6 sizes</span>
+    </div>
+    <div class="tab" onclick="selectTab(this)">
+      <span class="tab-label">Villa</span>
+      <span class="tab-count">1 Size</span>
+    </div>
+  </div>
+
+  <div class="floor-card">
+    <div class="floor-thumb">
+      <svg viewBox="0 0 60 60" fill="none" stroke="#4117ff" stroke-width="1.2">
+        <rect x="4" y="4" width="52" height="52" rx="2"></rect>
+        <rect x="4" y="4" width="30" height="26" rx="1"></rect>
+        <rect x="34" y="4" width="22" height="26" rx="1"></rect>
+        <rect x="4" y="30" width="52" height="26" rx="1"></rect>
+        <line x1="14" y1="30" x2="14" y2="56"></line>
+        <line x1="34" y1="4" x2="34" y2="56"></line>
+      </svg>
+      <div class="floor-3d">3D ›</div>
+    </div>
+    <div class="floor-info">
+      <div class="floor-size">Size 1</div>
+      <div><span class="floor-meta-label">Super built-up area</span></div>
+      <div class="floor-meta-val">1500-1700 sq.ft.</div>
+      <div><span class="floor-meta-label">Price</span></div>
+      <div class="floor-meta-val">₹2.25 Cr - 2.55 Cr</div>
+      <div class="floor-cta">Contact seller ›</div>
+    </div>
+  </div>
+
+  <div class="floor-card">
+    <div class="floor-thumb" style="background:#fff3e0">
+      <svg viewBox="0 0 60 60" fill="none" stroke="#e08030" stroke-width="1.2">
+        <rect x="4" y="8" width="52" height="44" rx="2"></rect>
+        <rect x="4" y="8" width="24" height="24" rx="1"></rect>
+        <rect x="28" y="8" width="28" height="24" rx="1"></rect>
+        <rect x="4" y="32" width="52" height="20" rx="1"></rect>
+        <line x1="20" y1="32" x2="20" y2="52"></line>
+      </svg>
+      <div class="floor-3d" style="background:#e08030">3D ›</div>
+    </div>
+    <div class="floor-info">
+      <div class="floor-size">Size 2</div>
+      <div><span class="floor-meta-label">Super built-up area</span></div>
+      <div class="floor-meta-val">1500-1700 sq.ft.</div>
+      <div><span class="floor-meta-label">Price</span></div>
+      <div class="floor-meta-val">₹2.25 Cr - 2.55 Cr</div>
+      <div class="floor-cta">Contact seller ›</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── PAYMENT PLAN ────────────────────────────────────── -->
+<div class="section">
+  <div class="section-title">Payment plan</div>
+  <div class="emi-main">EMI starts for 3 BHK at ₹1.5L/month</div>
+  <div class="emi-meta">
+    <span>Duration 30 years</span>
+    <span class="emi-sep"> | </span>
+    <span>Interest @ 7.5%</span>
+  </div>
+  <div class="link-blue">View payment breakup</div>
+  <button class="btn-wide">Contact seller</button>
+</div>
+
+<!-- ─── INVESTMENT INSIGHTS ─────────────────────────────── -->
+<div class="section">
+  <div class="section-title">Investment insights</div>
+  <div class="insight-row" style="margin-bottom:16px;">
+    <div class="insight-block">
+      <div class="insight-label">Current value</div>
+      <div class="insight-val">₹2.85 Cr</div>
+    </div>
+    <div class="insight-block">
+      <div class="insight-label">Projected value (1 year)</div>
+      <div class="insight-val">₹3.37 Cr</div>
+    </div>
+  </div>
+  <div class="insight-block" style="margin-bottom:8px;">
+    <div class="insight-label">Potential gain</div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span class="insight-val">₹52 L</span>
+      <span class="insight-gain">↑ 15.3% YOY</span>
+    </div>
+  </div>
+  <div class="insight-note">Based on last 3-year avg appreciation of 15.3%</div>
+  <div class="link-blue">View detailed insights</div>
+  <button class="btn-wide">Contact seller to invest</button>
+</div>
+
+<!-- ─── BETTER PRICED PROPERTIES ───────────────────────── -->
+<div class="similar-section">
+  <div class="similar-header">
+    <div class="section-title" style="margin-bottom:0">Better priced properties</div>
+    <div class="view-all">View all ›</div>
+  </div>
+  <div class="similar-scroll">
+    <!-- Card 1 -->
+    <div class="similar-card">
+      <div class="similar-img">
+        <div class="similar-img-bg" style="background:linear-gradient(135deg,#c5d5e8,#8fa8c8)"></div>
+        <div class="similar-fav">♡</div>
+      </div>
+      <div class="similar-name">DLF The Belaire</div>
+      <div class="similar-addr">Sadhu Vaswani Road, East Kharadi, Beng...</div>
+      <div class="similar-tags">
+        <span class="tag">RERA</span>
+        <span class="tag">Possession by 2028</span>
+      </div>
+      <div class="similar-price">₹2.25 Cr - 2.55 Cr</div>
+      <div class="similar-bhk">2, 3, 4 BHK Apartments + Villas</div>
+      <div class="similar-sqft">
+        <span>1438 - 2020 Sq.ft.</span>
+        <span style="color:#e6e6e6">|</span>
+        <span>₹29.39k/ Sq.ft.</span>
+      </div>
+      <button class="btn-phone">View phone</button>
+    </div>
+    <!-- Card 2 -->
+    <div class="similar-card">
+      <div class="similar-img">
+        <div class="similar-img-bg" style="background:linear-gradient(135deg,#c8d8b8,#90a878)"></div>
+        <div class="similar-fav">♡</div>
+      </div>
+      <div class="similar-name">DLF The Belaire</div>
+      <div class="similar-addr">Sadhu Vaswani Road, East Kharadi, Beng...</div>
+      <div class="similar-tags">
+        <span class="tag">RERA</span>
+        <span class="tag">Possession by 2028</span>
+      </div>
+      <div class="similar-price">₹2.25 Cr - 2.55 Cr</div>
+      <div class="similar-bhk">2, 3, 4 BHK Apartments + Villas</div>
+      <div class="similar-sqft">
+        <span>1438 - 2020 Sq.ft.</span>
+        <span style="color:#e6e6e6">|</span>
+        <span>₹29.39k/ Sq.ft.</span>
+      </div>
+      <button class="btn-phone">View phone</button>
+    </div>
+    <!-- Card 3 -->
+    <div class="similar-card">
+      <div class="similar-img">
+        <div class="similar-img-bg" style="background:linear-gradient(135deg,#e8d8c0,#c8a880)"></div>
+        <div class="similar-fav">♡</div>
+      </div>
+      <div class="similar-name">DLF The Belaire</div>
+      <div class="similar-addr">Sadhu Vaswani Road, East Kharadi, Beng...</div>
+      <div class="similar-tags">
+        <span class="tag">RERA</span>
+        <span class="tag">Possession by 2028</span>
+      </div>
+      <div class="similar-price">₹2.25 Cr - 2.55 Cr</div>
+      <div class="similar-bhk">2, 3, 4 BHK Apartments + Villas</div>
+      <div class="similar-sqft">
+        <span>1438 - 2020 Sq.ft.</span>
+        <span style="color:#e6e6e6">|</span>
+        <span>₹29.39k/ Sq.ft.</span>
+      </div>
+      <button class="btn-phone">View phone</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MASTER PLAN ─────────────────────────────────────── -->
+<div class="section">
+  <div class="section-title">Master plan</div>
+
+  <div class="master-plan-img">
+    <svg viewBox="0 0 80 80" fill="none" stroke="#5a7a50" stroke-width="1.2">
+      <rect x="4" y="4" width="72" height="72" rx="4"></rect>
+      <rect x="4" y="4" width="36" height="36"></rect>
+      <rect x="40" y="4" width="36" height="36"></rect>
+      <rect x="4" y="40" width="36" height="36"></rect>
+      <rect x="40" y="40" width="36" height="36"></rect>
+      <circle cx="22" cy="22" r="8"></circle>
+      <circle cx="58" cy="58" r="8"></circle>
+      <path d="M42 22h8M42 26h5"></path>
+      <path d="M8 56h8M8 60h6"></path>
+    </svg>
+  </div>
+
+  <div class="rera-label">RERA ID</div>
+  <div class="rera-val">
+    GGM/415/147/2020/31
+    <span class="rera-icon">i</span>
+  </div>
+
+  <div class="highlights-title">Key highlights</div>
+  <div class="kh-grid">
+    <div class="kh-item"><div class="kh-label">Project area</div><div class="kh-val">12 acres</div></div>
+    <div class="kh-item"><div class="kh-label">Units</div><div class="kh-val">654</div></div>
+    <div class="kh-item"><div class="kh-label">Towers</div><div class="kh-val">12</div></div>
+    <div class="kh-item"><div class="kh-label">Floors</div><div class="kh-val">32</div></div>
+  </div>
+
+  <div class="highlight-list">
+    <div class="highlight-item"><div class="hl-bullet"></div><span>Connected to South Delhi via Metro</span></div>
+    <div class="highlight-item"><div class="hl-bullet"></div><span>75% Green space with water bodies</span></div>
+    <div class="highlight-item"><div class="hl-bullet"></div><span>Amphitheatre &amp; Library onsite</span></div>
+    <div class="highlight-item"><div class="hl-bullet"></div><span>Fitness centre with pool</span></div>
+    <div class="highlight-item"><div class="hl-bullet"></div><span>Designed by HKR &amp; DFA Architects</span></div>
+  </div>
+
+  <button class="btn-wide">Ask for more details</button>
+</div>
+
+<!-- ─── AMENITIES ──────────────────────────────────────── -->
+<div class="section">
+  <div class="section-title">Amenities</div>
+  <div class="amenity-grid">
+    <div class="amenity">
+      <div class="amenity-icon"><span>🏊</span></div>
+      <div class="amenity-label">Swimming pool</div>
+    </div>
+    <div class="amenity">
+      <div class="amenity-icon"><span>⚡</span></div>
+      <div class="amenity-label">Power backup</div>
+    </div>
+    <div class="amenity">
+      <div class="amenity-icon"><span>📹</span></div>
+      <div class="amenity-label">CCTV</div>
+    </div>
+    <div class="amenity">
+      <div class="amenity-icon"><span>🚗</span></div>
+      <div class="amenity-label">Parking</div>
+    </div>
+    <div class="amenity">
+      <div class="amenity-icon"><span>🌳</span></div>
+      <div class="amenity-label">Park</div>
+    </div>
+    <div class="amenity">
+      <div class="amenity-icon"><span>💪</span></div>
+      <div class="amenity-label">Fitness centre</div>
+    </div>
+    <div class="amenity">
+      <div class="amenity-icon"><span>🏧</span></div>
+      <div class="amenity-label">ATM</div>
+    </div>
+    <div class="amenity">
+      <div class="amenity-icon" style="background:#eee"><span style="font-size:14px;color:#575757">+24</span></div>
+      <div class="amenity-label">more</div>
+    </div>
+  </div>
+  <button class="btn-wide">Contact seller</button>
+</div>
+
+<!-- ─── BOTTOM CTA ─────────────────────────────────────── -->
+<div class="bottom-cta">
+  <button class="btn-cta-outline">Contact seller</button>
+  <button class="btn-cta-primary">Contact seller</button>
+</div>
+
+<script>
+  // Tab switching
+  function selectTab(el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Favourite toggle
+  document.getElementById('favBtn').addEventListener('click', function() {
+    const svg = this.querySelector('svg');
+    const filled = this.dataset.faved === '1';
+    if (filled) {
+      svg.setAttribute('fill', 'none');
+      svg.querySelector('path').setAttribute('stroke', '#4c4c4c');
+      this.dataset.faved = '0';
+    } else {
+      svg.setAttribute('fill', '#ef4444');
+      svg.querySelector('path').setAttribute('stroke', '#ef4444');
+      this.dataset.faved = '1';
+    }
+  });
+
+  // Similar card favs
+  document.querySelectorAll('.similar-fav').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.textContent = btn.textContent.trim() === '♡' ? '♥' : '♡';
+      btn.style.color = btn.textContent.trim() === '♥' ? '#ef4444' : '#666';
+    });
+  });
+</script>
+
+
+</body></html>
