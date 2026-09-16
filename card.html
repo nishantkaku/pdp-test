@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nishant Kaku — Hologram Card</title>
+<meta name="description" content="A gyroscope-reactive holographic business card.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --hx:50%; --hy:50%; --hue:0deg; --rx:0deg; --ry:0deg;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{
+    min-height:100dvh;
+    display:flex;align-items:center;justify-content:center;
+    background:#05060a;
+    font-family:'Inter',sans-serif;
+    overflow:hidden;
+    touch-action:none;
+  }
+
+  /* ---------- Card shape (rounded rect w/ pinched waist) ---------- */
+  .card{
+    position:relative;
+    width:min(86vw,340px);
+    aspect-ratio:340/480;
+    clip-path:path("M28,0 H312 C327.5,0 340,12.5 340,28 V335 C340,355 305,350 305,378 C305,406 340,401 340,430 C340,456.5 328,468 300,470 L272,478 H68 L40,470 C12,468 0,456.5 0,430 C0,401 35,406 35,378 C35,350 0,355 0,335 V28 C0,12.5 12.5,0 28,0 Z");
+    background:#111;
+    box-shadow:0 30px 60px -15px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.06);
+    transform:perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+    transition:transform .08s linear;
+  }
+
+  .holo{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(circle at var(--hx) var(--hy),
+        #ffe9a8 0%, #ffb8d9 14%, #d7a8ff 28%, #9ab8ff 42%,
+        #8affe0 56%, #c8ffab 70%, #fff2a0 84%, #ffb8d9 100%);
+    filter:hue-rotate(var(--hue)) saturate(1.35) brightness(1.05);
+    background-size:220% 220%;
+  }
+
+  .holo-pattern{
+    position:absolute;inset:0;
+    opacity:.35;
+    mix-blend-mode:overlay;
+    background-image:
+      repeating-radial-gradient(circle at 30% 20%, rgba(255,255,255,.9) 0 1.5px, transparent 2px 26px),
+      repeating-radial-gradient(circle at 80% 70%, rgba(255,255,255,.7) 0 1.5px, transparent 2px 22px);
+    background-position:var(--hx) var(--hy);
+  }
+
+  .holo-sheen{
+    position:absolute;inset:0;
+    background:linear-gradient(115deg, transparent 30%, rgba(255,255,255,.55) 48%, transparent 66%);
+    background-size:300% 300%;
+    background-position:var(--hx) var(--hy);
+    mix-blend-mode:soft-light;
+  }
+
+  .grain{
+    position:absolute;inset:0;opacity:.05;mix-blend-mode:overlay;pointer-events:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  .content{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;align-items:center;
+    padding:0 28px;
+  }
+
+  .monogram{
+    flex:1;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Playfair Display',serif;
+    font-size:clamp(72px,26vw,110px);
+    font-weight:700;
+    letter-spacing:-2px;
+    background:linear-gradient(120deg,#1a1a1a,#3a3a3a 40%,#1a1a1a 70%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    opacity:.85;
+    filter:drop-shadow(0 1px 0 rgba(255,255,255,.4));
+    user-select:none;
+  }
+
+  .footer{
+    width:100%;
+    padding:18px 0 38px;
+    text-align:center;
+  }
+  .name{
+    font-family:'Playfair Display',serif;
+    font-size:22px;font-weight:700;color:#1a1a1a;margin-bottom:6px;
+  }
+  .links{
+    display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+  }
+  .links a{
+    font-size:12.5px;font-weight:600;color:#1a1a1a;text-decoration:none;
+    padding:6px 12px;border-radius:20px;
+    background:rgba(255,255,255,.55);
+    border:1px solid rgba(0,0,0,.12);
+    backdrop-filter:blur(4px);
+  }
+
+  .hint{
+    position:fixed;bottom:18px;left:0;right:0;text-align:center;
+    color:rgba(255,255,255,.55);font-size:12px;letter-spacing:.3px;
+  }
+  .hint button{
+    font:inherit;color:#111;background:#fff;border:none;
+    padding:6px 14px;border-radius:20px;cursor:pointer;margin-top:8px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="card" id="card">
+    <div class="holo" id="holo"></div>
+    <div class="holo-pattern"></div>
+    <div class="holo-sheen"></div>
+    <div class="grain"></div>
+    <div class="content">
+      <div class="monogram">NK</div>
+      <div class="footer">
+        <div class="name">Nishant Kaku</div>
+        <div class="links">
+          <a href="https://linkedin.com/in/nishantkaku" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://nishantkaku.dev" target="_blank" rel="noopener">Portfolio</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hint" id="hint"></div>
+
+<script>
+(() => {
+  const root = document.documentElement.style;
+  const hint = document.getElementById('hint');
+  let hasMotion = false;
+
+  function applyTilt(beta, gamma){
+    // beta: -180..180 (front/back), gamma: -90..90 (left/right)
+    const b = Math.max(-45, Math.min(45, beta));
+    const g = Math.max(-45, Math.min(45, gamma));
+    root.setProperty('--hx', (50 + g * 1.1) + '%');
+    root.setProperty('--hy', (50 + b * 1.1) + '%');
+    root.setProperty('--hue', (g * 4 + b * 2) + 'deg');
+    root.setProperty('--rx', (-b / 4) + 'deg');
+    root.setProperty('--ry', (g / 4) + 'deg');
+  }
+
+  function onOrientation(e){
+    if (e.beta === null || e.gamma === null) return;
+    hasMotion = true;
+    applyTilt(e.beta - 45, e.gamma); // ~45deg offset for natural phone hold angle
+  }
+
+  function startMotion(){
+    window.addEventListener('deviceorientation', onOrientation, true);
+  }
+
+  function needsPermission(){
+    return typeof DeviceOrientationEvent !== 'undefined'
+      && typeof DeviceOrientationEvent.requestPermission === 'function';
+  }
+
+  if (needsPermission()){
+    hint.innerHTML = 'Tilt me — enable motion<br><button id="enable">Enable motion</button>';
+    document.getElementById('enable').addEventListener('click', async () => {
+      try {
+        const res = await DeviceOrientationEvent.requestPermission();
+        if (res === 'granted'){ startMotion(); hint.textContent = ''; }
+        else { hint.textContent = 'Motion permission denied'; }
+      } catch (err){ hint.textContent = 'Motion not available'; }
+    });
+  } else if ('DeviceOrientationEvent' in window) {
+    startMotion();
+    hint.textContent = 'Tilt your phone';
+    setTimeout(() => { if(!hasMotion) fallbackLoop(); }, 1200);
+  } else {
+    fallbackLoop();
+  }
+
+  // Desktop / no-sensor fallback: mouse parallax + gentle auto drift
+  let mx = 0, my = 0, auto = 0;
+  document.addEventListener('pointermove', (e) => {
+    mx = (e.clientX / window.innerWidth - 0.5) * 90;
+    my = (e.clientY / window.innerHeight - 0.5) * 90;
+    applyTilt(my, mx);
+  });
+
+  function fallbackLoop(){
+    hint.textContent = 'Move your mouse';
+    const tick = () => {
+      auto += 0.006;
+      const g = Math.sin(auto) * 30 + mx * 0.3;
+      const b = Math.cos(auto * 0.8) * 20 + my * 0.3;
+      applyTilt(b, g);
+      requestAnimationFrame(tick);
+    };
+    tick();
+  }
+})();
+</script>
+</body>
+</html>
