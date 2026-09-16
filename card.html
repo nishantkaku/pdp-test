@@ -156,12 +156,14 @@
 
   function onOrientation(e){
     if (e.beta === null || e.gamma === null) return;
+    if (!hasMotion) hint.textContent = '';
     hasMotion = true;
     applyTilt(e.beta - 45, e.gamma); // ~45deg offset for natural phone hold angle
   }
 
   function startMotion(){
     window.addEventListener('deviceorientation', onOrientation, true);
+    window.addEventListener('deviceorientationabsolute', onOrientation, true);
   }
 
   function needsPermission(){
@@ -186,9 +188,12 @@
     fallbackLoop();
   }
 
-  // Desktop / no-sensor fallback: mouse parallax + gentle auto drift
+  // Desktop / no-sensor fallback: mouse parallax + gentle auto drift.
+  // Ignored once real gyroscope data arrives, so touch-dragging on a
+  // phone with working motion can't fight the tilt-driven values.
   let mx = 0, my = 0, auto = 0;
   document.addEventListener('pointermove', (e) => {
+    if (hasMotion) return;
     mx = (e.clientX / window.innerWidth - 0.5) * 90;
     my = (e.clientY / window.innerHeight - 0.5) * 90;
     applyTilt(my, mx);
