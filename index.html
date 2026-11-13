@@ -387,12 +387,6 @@
     }
     .btn-cta-primary:hover { background: #4410e0; }
     .btn-cta-outline:hover { background: #f5f5f5; }
-    /* VIDEOS (content from videos.json) */
-    .video-list { display: flex; flex-direction: column; gap: 16px; }
-    .video-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: #000; }
-    .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-    .video-title { font-size: 13px; font-weight: 500; color: #4c4c4c; margin-top: 8px; }
-
   </style>
 </head>
 <body>
@@ -747,12 +741,6 @@
   <button class="btn-wide">Contact seller</button>
 </div>
 
-<!-- VIDEOS: edit videos.json to add/remove videos -->
-<div class="section" id="videosSection" hidden>
-  <div class="section-title">Videos</div>
-  <div class="video-list" id="videoList"></div>
-</div>
-
 <!-- âââ BOTTOM CTA âââââââââââââââââââââââââââââââââââââââ -->
 <div class="bottom-cta">
   <button class="btn-cta-outline">Contact seller</button>
@@ -788,41 +776,6 @@
       btn.style.color = btn.textContent.trim() === 'â¥' ? '#ef4444' : '#666';
     });
   });
-
-  // Videos: loaded from videos.json
-  function youtubeId(url) {
-    const m = String(url).match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/);
-    return m ? m[1] : null;
-  }
-  fetch('videos.json', { cache: 'no-cache' })
-    .then(r => r.ok ? r.json() : [])
-    .then(videos => {
-      const list = document.getElementById('videoList');
-      videos.filter(v => v.show !== false).forEach(v => {
-        const id = youtubeId(v.url);
-        if (!id) return;
-        const item = document.createElement('div');
-        const frame = document.createElement('div');
-        frame.className = 'video-frame';
-        const iframe = document.createElement('iframe');
-        iframe.src = 'https://www.youtube-nocookie.com/embed/' + id;
-        iframe.title = v.title || 'Video';
-        iframe.loading = 'lazy';
-        iframe.allow = 'accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share';
-        iframe.allowFullscreen = true;
-        frame.appendChild(iframe);
-        item.appendChild(frame);
-        if (v.title) {
-          const t = document.createElement('div');
-          t.className = 'video-title';
-          t.textContent = v.title;
-          item.appendChild(t);
-        }
-        list.appendChild(item);
-      });
-      if (list.children.length) document.getElementById('videosSection').hidden = false;
-    })
-    .catch(() => {});
 </script>
 
 
